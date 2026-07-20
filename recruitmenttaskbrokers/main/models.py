@@ -1,12 +1,7 @@
-from django.core.validators import RegexValidator
 from django.db import models
 
+from .RegexHelpers import phoneRegexValidator
 
-
-
-#Regex taken from https://regex101.com/r/wZ4uU6/1
-#Should work with any international phone format
-phone_regex = RegexValidator(regex=r'\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}', message='Invalid phone number format.')
 
 class City(models.Model):
     ID = models.BigAutoField(primary_key=True)
@@ -40,7 +35,7 @@ class Contact(models.Model):
     name = models.CharField(max_length=200),
     lastName = models.CharField(max_length=200),
     email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=20, validators=[phone_regex], unique=True),
+    phone = models.CharField(max_length=20, validators=[phoneRegexValidator], unique=True),
     city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True),
     status = models.ForeignKey(ContactStatus, on_delete=models.PROTECT)
     createdAt = models.DateTimeField(auto_now_add=True)

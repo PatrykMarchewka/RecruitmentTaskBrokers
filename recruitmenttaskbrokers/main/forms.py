@@ -1,10 +1,8 @@
 from django import forms
-from django.core.validators import RegexValidator, EmailValidator
+from django.core.validators import EmailValidator
 
+from .RegexHelpers import phoneRegexValidator
 from .models import Contact
-
-phone_regex = RegexValidator(regex=r'\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}', message='Invalid phone number format.')
-
 
 class ContactForm(forms.ModelForm):
     class Meta:
@@ -18,5 +16,5 @@ class ContactForm(forms.ModelForm):
 
     def clean_phoneNumber(self):
         phoneNumber = self.cleaned_data.get('phoneNumber')
-        phone_regex(phoneNumber)
+        phoneRegexValidator(phoneNumber)
         return phoneNumber
