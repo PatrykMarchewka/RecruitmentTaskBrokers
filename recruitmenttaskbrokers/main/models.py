@@ -14,7 +14,7 @@ class City(models.Model):
 
 class CityWeather(models.Model):
     ID = models.BigAutoField(primary_key=True)
-    cityID = models.ForeignKey(City, on_delete=models.CASCADE)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
     temperature = models.FloatField(),
     humidity = models.FloatField()
     windSpeed = models.FloatField()
