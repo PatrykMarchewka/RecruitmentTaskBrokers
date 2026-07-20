@@ -3,8 +3,8 @@ from urllib.request import urlopen
 
 from django.core.exceptions import ValidationError
 
-from recruitmenttaskbrokers.main.helpers import stripPolishCharacters
-from recruitmenttaskbrokers.main.models import City
+from .StringManipulator import stripPolishCharacters
+from .models import City
 
 
 def _callOpenStreetMapAPI(cityName: str) -> dict | None:

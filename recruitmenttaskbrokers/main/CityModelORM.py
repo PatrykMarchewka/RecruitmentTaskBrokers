@@ -1,4 +1,5 @@
-from recruitmenttaskbrokers.main import helpers, OpenStreetMapAPI
+from .StringManipulator import  stripPolishCharacters
+from .OpenStreetMapAPI import  callOpenStreetMapAPIAndSave
 from recruitmenttaskbrokers.main.models import City
 
 
@@ -10,10 +11,10 @@ def getCityByName(cityName:str) -> City | None:
     """
     if cityName is None:
         return None
-    cityName = helpers.stripPolishCharacters(cityName)
+    cityName = stripPolishCharacters(cityName)
     cityName = cityName.lower()
 
     city = City.objects.filter(name=cityName).first()
     if city is None:
-        return OpenStreetMapAPI.callOpenStreetMapAPIAndSave(cityName)
+        return callOpenStreetMapAPIAndSave(cityName)
     return city

@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 
-from recruitmenttaskbrokers.main.models import ContactStatus
-from recruitmenttaskbrokers.main.helpers import stripPolishCharacters
+from .models import ContactStatus
+from .StringManipulator import stripPolishCharacters
 
 
 def getOrCreateStatusByName(status:str) -> ContactStatus:

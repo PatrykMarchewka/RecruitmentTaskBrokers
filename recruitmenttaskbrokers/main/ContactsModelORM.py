@@ -1,7 +1,7 @@
 from typing import Optional
 from django.db.models import QuerySet, Q
 
-from recruitmenttaskbrokers.main.models import Contact
+from .models import Contact
 
 
 def getSortedContacts(sort:Optional[str]=None, contacts:Optional[QuerySet[Contact]]=None) -> QuerySet:
