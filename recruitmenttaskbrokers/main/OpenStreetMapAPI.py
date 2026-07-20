@@ -1,7 +1,7 @@
 import json
 from urllib.request import urlopen
 
-from recruitmenttaskbrokers.main.helpers import _stripPolishCharacters
+from recruitmenttaskbrokers.main.helpers import stripPolishCharacters
 from recruitmenttaskbrokers.main.models import City
 
 
@@ -31,7 +31,7 @@ def _parseOpenStreetMapData(json: dict) -> tuple[str, float, float] | None:
         return None
 
     try:
-        cityParsed = _stripPolishCharacters(str(cityJSON))
+        cityParsed = stripPolishCharacters(str(cityJSON))
         lat = float(latJSON)
         lon = float(lonJSON)
     except (TypeError, ValueError):
