@@ -1,6 +1,8 @@
 import json
 from urllib.request import urlopen
 
+from django.core.exceptions import ValidationError
+
 from recruitmenttaskbrokers.main.models import City, CityWeather
 
 
@@ -48,7 +50,7 @@ def _parseOpenMeteoData(json: dict) -> tuple[float, float, float] | None:
 
 def callOpenMeteoAPIAndSave(city: City) -> CityWeather | None:
     """
-    Calls OpenMeteo API and in case of return saves it to database
+    Calls OpenMeteo API and in case of valid return saves it to the database
     :param city: City to search weather for
     :return: CityWeather if it was found and saved, otherwise None
     """
@@ -59,5 +61,12 @@ def callOpenMeteoAPIAndSave(city: City) -> CityWeather | None:
     if temperature is None or humidity is None or windSpeed is None:
         return None
     cityWeather = CityWeather(cityID=City.ID, temperature=temperature, humidity=humidity, windspeed=windSpeed)
-    cityWeather.save()
+    try:
+        cityWeather.clean_fields()
+        cityWeather.save()
+    except ValidationError as e:
+        print("----------------------")
+        print("Error saving city weather", cityWeather)
+        print("Reason:", e)
+        return None
     return cityWeather

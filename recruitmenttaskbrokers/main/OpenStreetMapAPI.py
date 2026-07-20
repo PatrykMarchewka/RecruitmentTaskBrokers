@@ -1,6 +1,8 @@
 import json
 from urllib.request import urlopen
 
+from django.core.exceptions import ValidationError
+
 from recruitmenttaskbrokers.main.helpers import stripPolishCharacters
 from recruitmenttaskbrokers.main.models import City
 
@@ -44,14 +46,21 @@ def callOpenStreetMapAPIAndSave(cityName: str) -> City | None:
     :param cityName: Name of the city to find
     :return: City if it was found and saved, otherwise None
     """
-    json = _callOpenStreetMapAPI(cityName)
-    if json is None:
+    returnJSON = _callOpenStreetMapAPI(cityName)
+    if returnJSON is None:
         return None
-    cityName, latitude, longitude = _parseOpenStreetMapData(json)
+    cityName, latitude, longitude = _parseOpenStreetMapData(returnJSON)
 
     if cityName is None or latitude is None or longitude is None:
         return None
 
     city = City(name=cityName, lat=latitude, lon=longitude)
-    city.save()
+    try:
+        city.full_clean()
+        city.save()
+    except ValidationError as e:
+        print("----------------------")
+        print("Error saving city", city)
+        print("Reason:", e)
+        return None
     return city
