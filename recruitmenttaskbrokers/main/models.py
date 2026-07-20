@@ -15,7 +15,7 @@ class City(models.Model):
     lon = models.FloatField()
 
     def __str__(self):
-        return f'{self.name} - {self.lat} {self.lon}'
+        return f'{self.name} - {self.lat}lat {self.lon}lon'
 
 class CityWeather(models.Model):
     ID = models.BigAutoField(primary_key=True)
@@ -24,6 +24,9 @@ class CityWeather(models.Model):
     humidity = models.FloatField()
     windSpeed = models.FloatField()
     createdAt = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f'{self.city.name}: Temperature {self.temperature}C, Humidity {self.humidity}%, Wind speed {self.windSpeed}kmh'
 
 class ContactStatus(models.Model):
     ID = models.BigAutoField(primary_key=True)
