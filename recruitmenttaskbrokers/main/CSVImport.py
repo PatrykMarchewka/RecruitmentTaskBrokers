@@ -32,6 +32,12 @@ def importCSV(file) -> int:
         status = getOrCreateStatusByName(contactInfo.status)
         city = getCityByName(contactInfo.city)
         contact = Contact(name=contactInfo.name, lastName=contactInfo.lastName, email=contactInfo.email, phone=contactInfo.phoneNumber, city=city, status=status)
-        contact.save()
-        rows+=1
+        try:
+            contact.full_clean()
+            contact.save()
+            rows += 1
+        except ValidationError as e:
+            print("----------------------")
+            print("Error importing contact", contact)
+            print("Reason:", e)
     return rows
