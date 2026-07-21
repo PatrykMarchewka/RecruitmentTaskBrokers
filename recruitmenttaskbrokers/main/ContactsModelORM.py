@@ -37,8 +37,8 @@ def getFilteredContacts(contactFilter:Optional[str]=None, contacts:Optional[Quer
         return contacts
 
     return contacts.filter(
-            Q(first_name__icontains=filter) |
-            Q(last_name__icontains=filter)
+            Q(name__icontains=contactFilter) |
+            Q(lastName__icontains=contactFilter)
         )
 
 def addContact(contactInfo: ContactRow):

@@ -16,7 +16,7 @@ class ContactForm(forms.ModelForm):
         EmailValidator()(email)
         return email
 
-    def clean_phoneNumber(self):
+    def clean_phone(self):
         phoneNumber = self.cleaned_data.get('phone')
         phoneRegexValidator(phoneNumber)
         return phoneNumber
