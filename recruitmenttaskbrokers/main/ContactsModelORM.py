@@ -57,3 +57,27 @@ def addContact(contactInfo: ContactRow):
         print("----------------------")
         print("Error importing contact", contact)
         print("Reason:", e)
+
+def updateContact(contact: Contact, contactInfo: ContactRow):
+    """
+    Updates existing contact in a database
+    :param contact: Contact to update
+    :param contactInfo: Updated information about contact
+    :return: Nothing
+    """
+    status = getOrCreateStatusByName(contactInfo.status)
+    city = getCityByName(contactInfo.city)
+
+    contact.name = contactInfo.name
+    contact.lastName = contactInfo.lastName
+    contact.email = contactInfo.email
+    contact.phone = contactInfo.phone
+    contact.status = status
+    contact.city = city
+    try:
+        contact.full_clean()
+        contact.save()
+    except ValidationError as e:
+        print("----------------------")
+        print("Error updating contact", contact)
+        print("Reason:", e)
