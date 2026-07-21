@@ -11,6 +11,14 @@ class ContactForm(forms.ModelForm):
         model = Contact
         fields = ['name', 'lastName', 'email', 'phone'] #city and status omitted
 
+    def __init__(self, *args, **kwargs):
+        contact = kwargs.get('instance')
+        super().__init__(*args, **kwargs)
+
+        if contact:
+            self.fields['city'].initial = contact.city.name
+            self.fields['status'].initial = contact.status.name
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         EmailValidator()(email)
