@@ -1,6 +1,11 @@
 from typing import Optional
+
+from django.core.exceptions import ValidationError
 from django.db.models import QuerySet, Q
 
+from .CityModelORM import getCityByName
+from .ContactRow import ContactRow
+from .ContactStatusModelORM import getOrCreateStatusByName
 from .models import Contact
 
 
@@ -36,4 +41,19 @@ def getFilteredContacts(contactFilter:Optional[str]=None, contacts:Optional[Quer
             Q(last_name__icontains=filter)
         )
 
-def addContact(firstName:str, lastName:str, contact:Contact):
+def addContact(contactInfo: ContactRow):
+    """
+    Adds a new contact to the database
+    :param contactInfo: Information about contact
+    :return: Nothing
+    """
+    status = getOrCreateStatusByName(contactInfo.status)
+    city = getCityByName(contactInfo.city)
+    contact = Contact(name=contactInfo.name, lastName=contactInfo.lastName, email=contactInfo.email,phone=contactInfo.phone, city=city, status=status)
+    try:
+        contact.full_clean()
+        contact.save()
+    except ValidationError as e:
+        print("----------------------")
+        print("Error importing contact", contact)
+        print("Reason:", e)
