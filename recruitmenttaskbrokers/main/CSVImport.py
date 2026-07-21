@@ -1,15 +1,12 @@
 import csv
-from collections import namedtuple
 from io import TextIOWrapper
 
 from django.core.exceptions import ValidationError
 
-from ContactStatusModelORM import getOrCreateStatusByName
-from CityModelORM import getCityByName
+from .ContactRow import ContactRow
+from .ContactStatusModelORM import getOrCreateStatusByName
+from .CityModelORM import getCityByName
 from .models import Contact
-
-
-ContactRow = namedtuple("ContactRow", ["name", "lastName", "email", "phoneNumber", "city", "status"])
 
 def _parseContactsRow(row: dict) -> ContactRow:
     name = row["Name"]
@@ -31,7 +28,7 @@ def importCSV(file) -> int:
         contactInfo = _parseContactsRow(row)
         status = getOrCreateStatusByName(contactInfo.status)
         city = getCityByName(contactInfo.city)
-        contact = Contact(name=contactInfo.name, lastName=contactInfo.lastName, email=contactInfo.email, phone=contactInfo.phoneNumber, city=city, status=status)
+        contact = Contact(name=contactInfo.name, lastName=contactInfo.lastName, email=contactInfo.email, phone=contactInfo.phone, city=city, status=status)
         try:
             contact.full_clean()
             contact.save()
