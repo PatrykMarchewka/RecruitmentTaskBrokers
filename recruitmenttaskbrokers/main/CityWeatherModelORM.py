@@ -1,16 +1,17 @@
 from datetime import datetime, timedelta
 
 from .OpenMeteoAPI import callOpenMeteoAPIAndSave
-from .models import City, CityWeather
+
+from .OpenMeteoAPI import callOpenMeteoAPIAndSave, callOpenMeteoAPIByCityAndSave
 from recruitmenttaskbrokers.main.models import City, CityWeather
 
 
 def getWeatherForCity(city:City) -> CityWeather | None:
-    recentWeather = CityWeather.objects.filter(ID=city.id).order_by('-createdAt').first()
+    recentWeather = city.weather
 
     if recentWeather is None:
-        return callOpenMeteoAPIAndSave(city)
+        return callOpenMeteoAPIByCityAndSave(city)
     if recentWeather.createdAt < datetime.now() - timedelta(hours=1):
         #Most recent weather for this city check was over 1 hour ago, call the API again
-        return callOpenMeteoAPIAndSave(city)
+        return callOpenMeteoAPIByCityAndSave(city)
     return recentWeather

@@ -48,25 +48,34 @@ def _parseOpenMeteoData(json: dict) -> tuple[float, float, float] | None:
 
     return temperature, humidity, windSpeed
 
-def callOpenMeteoAPIAndSave(city: City) -> CityWeather | None:
+def callOpenMeteoAPIAndSave(lat: float, lon: float) -> CityWeather | None:
     """
-    Calls OpenMeteo API and in case of valid return saves it to the database
-    :param city: City to search weather for
-    :return: CityWeather if it was found and saved, otherwise None
-    """
-    json = _callOpenMeteoAPI(city.lat, city.lon)
+        Calls OpenMeteo API and in case of valid return saves it to the database
+        :param lat: Latitude to use
+        :param lon: Longitude to use
+        :return: CityWeather if it was found and saved, otherwise None
+        """
+    json = _callOpenMeteoAPI(lat, lon)
     if json is None:
         return None
     temperature, humidity, windSpeed = _parseOpenMeteoData(json)
     if temperature is None or humidity is None or windSpeed is None:
         return None
-    cityWeather = CityWeather(cityID=City.ID, temperature=temperature, humidity=humidity, windspeed=windSpeed)
+    cityWeather = CityWeather(temperature=temperature, humidity=humidity, windSpeed=windSpeed)
     try:
         cityWeather.clean_fields()
         cityWeather.save()
     except ValidationError as e:
         print("----------------------")
-        print("Error saving city weather", cityWeather)
+        print("Error saving weather", cityWeather)
         print("Reason:", e)
         return None
     return cityWeather
+
+def callOpenMeteoAPIByCityAndSave(city: City) -> CityWeather | None:
+    """
+    Calls OpenMeteo API and in case of valid return saves it to the database
+    :param city: City to search weather for
+    :return: CityWeather if it was found and saved, otherwise None
+    """
+    return callOpenMeteoAPIAndSave(city.lat, city.lon)
