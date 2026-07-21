@@ -1,11 +1,13 @@
 import json
-from urllib.request import urlopen
+from urllib.request import urlopen, Request
 
 from django.core.exceptions import ValidationError
 
 from .StringManipulator import stripPolishCharacters
 from .models import City
 
+
+useragent = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0"}
 
 def _callOpenStreetMapAPI(cityName: str) -> dict | None:
     """
@@ -14,11 +16,12 @@ def _callOpenStreetMapAPI(cityName: str) -> dict | None:
     :return: Dictionary with all fields from JSON response or None if result is empty
     """
     url = f"https://nominatim.openstreetmap.org/search?q={cityName}&format=json&limit=1"
-    with urlopen(url) as response:
+    req = Request(url=url, headers=useragent)
+    with urlopen(req) as response:
         result =  json.load(response)[0]
     if not result:
         return None
-    return result[0]
+    return result
 
 def _parseOpenStreetMapData(json: dict) -> tuple[str, float, float] | None:
     """
@@ -26,7 +29,7 @@ def _parseOpenStreetMapData(json: dict) -> tuple[str, float, float] | None:
     :param json: OpenStreetMap API response
     :return: Tuple of city, lat, lon or None if one or more fields are missing or can't be converted
     """
-    cityJSON = json.get('city')
+    cityJSON = json.get('display_name')
     latJSON = json.get('lat')
     lonJSON = json.get('lon')
     if cityJSON is None or latJSON is None or lonJSON is None:
@@ -42,7 +45,7 @@ def _parseOpenStreetMapData(json: dict) -> tuple[str, float, float] | None:
 
 def callOpenStreetMapAPIAndSave(cityName: str) -> City | None:
     """
-    Calls OpenStreetMap API and in case of correct return saves it to database
+    Calls OpenStreetMap API and in case of correct return saves it to database if it doesn't exist there
     :param cityName: Name of the city to find
     :return: City if it was found and saved, otherwise None
     """
@@ -53,14 +56,15 @@ def callOpenStreetMapAPIAndSave(cityName: str) -> City | None:
 
     if cityName is None or latitude is None or longitude is None:
         return None
-
-    city = City(name=cityName, lat=latitude, lon=longitude)
-    try:
-        city.full_clean()
-        city.save()
-    except ValidationError as e:
-        print("----------------------")
-        print("Error saving city", city)
-        print("Reason:", e)
-        return None
+    #Checking if City already exists in database because saved name is from OpenStreetMapAPI and OpenStreetMap returns city incase of partial match of form
+    city = City.objects.filter(name=cityName, lat=latitude, lon=longitude).first()
+    if city is None:
+        city = City(name=cityName, lat=latitude, lon=longitude)
+        try:
+            city.full_clean()
+            city.save()
+        except ValidationError as e:
+            print("----------------------")
+            print("Error saving city", city)
+            print("Reason:", e)
     return city
