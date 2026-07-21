@@ -16,7 +16,7 @@ def _callOpenMeteoAPI(lat: float, lon: float) -> dict | None:
     #Note: OpenMeteo seems to round the lat/lon coordinates, most likely to nearest station?
     url = f'https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature,relative_humidity_2m,windspeed'
     with urlopen(url) as response:
-        result =  json.load(response)[0]
+        result =  json.load(response)
     if not result:
         return None
     if result.get('error') is True:
