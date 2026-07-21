@@ -15,7 +15,7 @@ class City(models.Model):
 class CityWeather(models.Model):
     ID = models.BigAutoField(primary_key=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
-    temperature = models.FloatField(),
+    temperature = models.FloatField()
     humidity = models.FloatField()
     windSpeed = models.FloatField()
     createdAt = models.DateTimeField(auto_now_add=True)
@@ -32,11 +32,11 @@ class ContactStatus(models.Model):
 
 class Contact(models.Model):
     ID = models.BigAutoField(primary_key=True)
-    name = models.CharField(max_length=200),
-    lastName = models.CharField(max_length=200),
+    name = models.CharField(max_length=200)
+    lastName = models.CharField(max_length=200)
     email = models.EmailField(unique=True)
-    phone = models.CharField(max_length=20, validators=[phoneRegexValidator], unique=True),
-    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True),
+    phone = models.CharField(max_length=20, validators=[phoneRegexValidator], unique=True)
+    city = models.ForeignKey(City, on_delete=models.SET_NULL, null=True)
     status = models.ForeignKey(ContactStatus, on_delete=models.PROTECT)
     createdAt = models.DateTimeField(auto_now_add=True)
 
