@@ -1,8 +1,8 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from django.utils import timezone
 
-from .OpenMeteoAPI import callOpenMeteoAPIAndSave, callOpenMeteoAPIByCityAndSave
+from recruitmenttaskbrokers.main.ThirdPartyAPI.OpenMeteoAPI import callOpenMeteoAPIByCityAndSave
 from recruitmenttaskbrokers.main.models import City, CityWeather
 
 

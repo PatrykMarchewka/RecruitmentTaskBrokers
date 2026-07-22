@@ -4,9 +4,9 @@ from django.core.exceptions import ValidationError
 from django.db.models import QuerySet, Q
 
 from .CityModelORM import getCityByName
-from .ContactRow import ContactRow
+from recruitmenttaskbrokers.main.ContactRow import ContactRow
 from .ContactStatusModelORM import getOrCreateStatusByName
-from .models import Contact
+from recruitmenttaskbrokers.main.models import Contact
 
 
 def getSortedContacts(sort:Optional[str]=None, contacts:Optional[QuerySet[Contact]]=None) -> QuerySet:

@@ -1,11 +1,11 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 
-from . import ContactsModelORM, CityWeatherModelORM
+from .ORM import CityWeatherModelORM, ContactsModelORM
 from .CSVImport import importCSV
 from .ContactRow import parseContactsRow
 from .forms import ContactForm
-from .models import Contact, City
+from .models import Contact
 
 
 def ContactListGet(request):

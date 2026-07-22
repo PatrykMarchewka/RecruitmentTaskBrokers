@@ -1,5 +1,5 @@
-from .StringManipulator import  stripPolishCharacters
-from .OpenStreetMapAPI import  callOpenStreetMapAPIAndSave
+from recruitmenttaskbrokers.main.StringManipulator import  stripPolishCharacters
+from recruitmenttaskbrokers.main.ThirdPartyAPI.OpenStreetMapAPI import  callOpenStreetMapAPIAndSave
 from recruitmenttaskbrokers.main.models import City
 
 

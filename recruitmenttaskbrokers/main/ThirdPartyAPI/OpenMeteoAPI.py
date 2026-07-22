@@ -3,7 +3,7 @@ from urllib.request import urlopen
 
 from django.core.exceptions import ValidationError
 
-from .models import City, CityWeather
+from recruitmenttaskbrokers.main.models import City, CityWeather
 
 
 def _callOpenMeteoAPI(lat: float, lon: float) -> dict | None:

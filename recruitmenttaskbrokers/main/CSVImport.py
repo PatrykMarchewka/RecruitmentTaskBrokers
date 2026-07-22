@@ -4,8 +4,8 @@ from io import TextIOWrapper
 from django.core.exceptions import ValidationError
 
 from .ContactRow import ContactRow
-from .ContactStatusModelORM import getOrCreateStatusByName
-from .CityModelORM import getCityByName
+from recruitmenttaskbrokers.main.ORM.ContactStatusModelORM import getOrCreateStatusByName
+from recruitmenttaskbrokers.main.ORM.CityModelORM import getCityByName
 from .models import Contact
 
 def _parseContactsRow(row: dict) -> ContactRow:

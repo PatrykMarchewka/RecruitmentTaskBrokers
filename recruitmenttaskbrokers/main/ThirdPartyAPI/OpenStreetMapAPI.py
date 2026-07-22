@@ -4,9 +4,9 @@ from urllib.request import urlopen, Request
 
 from django.core.exceptions import ValidationError
 
-from . import OpenMeteoAPI
-from .StringManipulator import stripPolishCharacters
-from .models import City
+from recruitmenttaskbrokers.main.ThirdPartyAPI import OpenMeteoAPI
+from recruitmenttaskbrokers.main.StringManipulator import stripPolishCharacters
+from recruitmenttaskbrokers.main.models import City
 
 
 useragent = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/150.0.0.0 Safari/537.36 Edg/150.0.0.0"}
