@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path
 
 from recruitmenttaskbrokers.main.views import *
+from recruitmenttaskbrokers.main.RestAPI.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,5 +27,7 @@ urlpatterns = [
     path('contacts/contactEdit/<int:contactID>', ContactEdit, name='contactEdit'),
     path('contacts/contactDelete/<int:contactID>/', ContactListDelete, name='contactDelete'),
     path('contacts/contactImport/', ContactImport, name='contactImport'),
+    path("api/contacts/", ContactsView.as_view()),
+    path("api/contacts/<int:ID>/", ContactsView.as_view())
 
 ]
