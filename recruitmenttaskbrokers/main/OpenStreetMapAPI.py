@@ -65,7 +65,7 @@ def callOpenStreetMapAPIAndSave(cityName: str) -> City | None:
     if cityName is None or latitude is None or longitude is None:
         return None
     #Checking if City already exists in database because saved name is from OpenStreetMapAPI and OpenStreetMap returns city incase of partial match of form
-    city = City.objects.filter(name=cityName, lat=latitude, lon=longitude).first()
+    city = City.objects.filter(name=cityName).first()
     if city is None:
         weather = OpenMeteoAPI.callOpenMeteoAPIAndSave(lat=latitude, lon=longitude)
         city = City(name=cityName, lat=latitude, lon=longitude, weather=weather)
