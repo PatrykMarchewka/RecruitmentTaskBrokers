@@ -15,7 +15,7 @@ def _parseContactsRow(row: dict) -> ContactRow:
     phoneNumber = row["Phone Number"]
     city = row["City"]
     status = row["Status"]
-    return name, lastName, email, phoneNumber, city, status
+    return ContactRow(name, lastName, email, phoneNumber, city, status)
 
 
 def importCSV(file) -> int:
