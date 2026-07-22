@@ -17,6 +17,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from recruitmenttaskbrokers.main.views import *
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('contacts/contactList/', ContactListGet, name='contactList'),
+    path('contacts/contactEdit/', ContactCreate, name='contactCreate'),
+    path('contacts/contactEdit/<int:contactID>', ContactEdit, name='contactEdit'),
+    path('contacts/contactDelete/<int:contactID>/', ContactListDelete, name='contactDelete'),
+    path('contacts/contactImport/', ContactImport, name='contactImport'),
+
 ]
