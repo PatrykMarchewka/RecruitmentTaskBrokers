@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  web:
+    build: main
+    container_name: contacts_app
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    environment:
+      PYTHONDONTWRITEBYTECODE: 1 #Avoids creating .pyc files
+      PYTHONUNBUFFERED: 1 #Dont buffer stdout, show all prints immediately
