@@ -3,10 +3,10 @@ from io import TextIOWrapper
 
 from django.core.exceptions import ValidationError
 
-from .ContactRow import ContactRow
+from recruitmenttaskbrokers.main.ContactRow import ContactRow
 from recruitmenttaskbrokers.main.ORM.ContactStatusModelORM import getOrCreateStatusByName
 from recruitmenttaskbrokers.main.ORM.CityModelORM import getCityByName
-from .models import Contact
+from recruitmenttaskbrokers.main.models import Contact
 
 def _parseContactsRow(row: dict) -> ContactRow:
     name = row["Name"]
@@ -19,7 +19,11 @@ def _parseContactsRow(row: dict) -> ContactRow:
 
 
 def importCSV(file) -> int:
-
+    """
+    Imports contacts from a csv file and saves them to DB
+    :param file: CSV file to import from
+    :return: Number of imported contacts
+    """
     wrapper = TextIOWrapper(file, encoding="utf-8")
     reader = csv.DictReader(wrapper)
 
