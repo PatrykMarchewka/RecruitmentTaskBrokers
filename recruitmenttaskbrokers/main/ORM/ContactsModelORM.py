@@ -41,11 +41,11 @@ def getFilteredContacts(contactFilter:Optional[str]=None, contacts:Optional[Quer
             Q(lastName__icontains=contactFilter)
         )
 
-def addContact(contactInfo: ContactRow):
+def addContact(contactInfo: ContactRow) -> Contact | None:
     """
     Adds a new contact to the database
     :param contactInfo: Information about contact
-    :return: Nothing
+    :return: Contact if it was added to database, otherwise nothing
     """
     status = getOrCreateStatusByName(contactInfo.status)
     city = getCityByName(contactInfo.city)
@@ -53,6 +53,7 @@ def addContact(contactInfo: ContactRow):
     try:
         contact.full_clean()
         contact.save()
+        return contact
     except ValidationError as e:
         print("----------------------")
         print("Error importing contact", contact)

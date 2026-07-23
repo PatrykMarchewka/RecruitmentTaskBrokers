@@ -36,13 +36,19 @@ def ContactCreate(request):
     if request.method == "POST":
         form = ContactForm(request.POST)
         if form.is_valid():
-            form = form.cleaned_data
-            contact = parseContactsRow(form)
-            ContactsModelORM.addContact(contact)
-            messages.success(request, 'Contact Created Successfully')
-            return redirect('contactList')
+            form_CLEANED = form.cleaned_data
+            contact = parseContactsRow(form_CLEANED)
+            addedContact = ContactsModelORM.addContact(contact)
+            if addedContact is not None:
+                messages.success(request, 'Contact Created Successfully')
+                #Clear form to allow adding multiple people back to back
+                form = ContactForm()
+            else:
+                messages.error(request, 'Failed to create contact')
         else:
-            messages.error(request, 'Updated Failed')
+            for errors in form.errors.values():
+                for error in errors:
+                    messages.error(request, f'{error}')
     #Getting empty form
     else:
         form = ContactForm()
@@ -55,11 +61,10 @@ def ContactEdit(request, contactID):
     if request.method == "POST":
         form = ContactForm(request.POST, instance=contact)
         if form.is_valid():
-            form = form.cleaned_data
-            contactRow = parseContactsRow(form)
+            form_CLEANED = form.cleaned_data
+            contactRow = parseContactsRow(form_CLEANED)
             ContactsModelORM.updateContact(contact, contactRow)
             messages.success(request, 'Contact Updated Successfully')
-            return redirect('contactList')
         else:
             for errors in form.errors.values():
                 for error in errors:
