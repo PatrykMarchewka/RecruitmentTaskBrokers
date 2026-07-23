@@ -9,6 +9,9 @@ from recruitmenttaskbrokers.main.models import Contact
 from recruitmenttaskbrokers.main.RestAPI.APISerializers import ContactSerializer
 
 class ContactsView(APIView):
+    """
+    API endpoint that allows contacts to be viewed or edited
+    """
 
     def get(self, request):
         query = Contact.objects.select_related("city", "status").all()

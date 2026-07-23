@@ -4,6 +4,9 @@ from recruitmenttaskbrokers.main.models import Contact
 
 
 class ContactSerializer(serializers.ModelSerializer):
+    """
+    Serializer for Contact model converting object to dictionary
+    """
     city = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
 

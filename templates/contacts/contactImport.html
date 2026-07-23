@@ -18,7 +18,7 @@
 
         <form method="POST" enctype="multipart/form-data" class="mt-2">
             {% csrf_token %}
-
+            <!-- File input field -->
             <div class="mb-3">
                 <label class="form-label fw-bold">Choose CSV file</label>
                 <input
@@ -57,7 +57,7 @@
     </a>
 </div>
 
-
+<!-- Messages displaying status -->
 {% if messages %}
     <div class="mt-3">
         {% for message in messages %}
