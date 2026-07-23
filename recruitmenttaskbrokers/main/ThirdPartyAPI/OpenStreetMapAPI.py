@@ -26,10 +26,10 @@ def _callOpenStreetMapAPI(cityName: str) -> dict | None:
 
     req = Request(url=url, headers=useragent)
     with urlopen(req) as response:
-        result =  json.load(response)[0]
+        result =  json.load(response)
     if not result:
         return None
-    return result
+    return result[0]
 
 def _parseOpenStreetMapData(json: dict) -> tuple[str, float, float] | None:
     """
