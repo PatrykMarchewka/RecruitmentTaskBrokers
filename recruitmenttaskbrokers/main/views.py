@@ -2,7 +2,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 
 from .ORM import CityWeatherModelORM, ContactsModelORM
-from .CSVImport import importCSV
+from recruitmenttaskbrokers.main.CSV.CSVImport import importCSV
+from recruitmenttaskbrokers.main.CSV.CSVExport import exportCSV
 from .ContactRow import parseContactsRow
 from .forms import ContactForm
 from .models import Contact
@@ -84,3 +85,8 @@ def ContactImport(request):
         return redirect('contactImport')
 
     return render(request, "contacts/contactImport.html")
+
+def ContactExport(request):
+    rows = exportCSV()
+    messages.success(request, f"Exported {rows} rows")
+    return redirect('contactImport')

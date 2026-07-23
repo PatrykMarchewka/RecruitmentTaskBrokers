@@ -27,6 +27,8 @@ urlpatterns = [
     path('contacts/contactEdit/<int:contactID>', ContactEdit, name='contactEdit'),
     path('contacts/contactDelete/<int:contactID>/', ContactListDelete, name='contactDelete'),
     path('contacts/contactImport/', ContactImport, name='contactImport'),
+    path('contacts/contactExport/', ContactExport, name='contactExport'),
+    #REST API
     path("api/contacts/", ContactsView.as_view()),
     path("api/contacts/<int:ID>/", ContactsView.as_view())
 
